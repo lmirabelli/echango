@@ -68,11 +68,12 @@ export class AgregarProductoLista implements AfterViewInit, OnDestroy {
         });
         this.productoDetectadoMsg.set(`¡Producto reconocido: ${productoBD.producto}! Ajustá la cantidad y guardá.`);
       } else {
-        // Si no está en la BD, dejamos el código listo para cargarlo manualmente
-        this.itemForm.patchValue({
-          codigo_barras: codigoEscaneado
+        this.router.navigate(['/agregar-producto'], { 
+          queryParams: { 
+            codigo: codigoEscaneado, 
+            listaId: this.listaId // <-- Mandamos el ID de la lista activa
+          } 
         });
-        this.productoDetectadoMsg.set(`Código nuevo (${codigoEscaneado}). Completá los datos y agregalo.`);
       }
     } catch (err) {
       this.errorMessage.set('Error al consultar el código de barras.');

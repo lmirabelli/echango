@@ -21,6 +21,9 @@ export class AgregarProducto implements OnInit {
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);
   isEditMode = signal(false);
+  
+  // Variable para almacenar de qué lista vino (si aplica)
+  private origenListaId: string | null = null;
 
   productoForm: FormGroup = this.fb.group({
     producto: ['', [Validators.required]],
@@ -33,6 +36,9 @@ export class AgregarProducto implements OnInit {
   async ngOnInit() {
     this.route.queryParams.subscribe(async (params) => {
       const codigoParam = params['codigo'];
+      // Capturamos el listaId si viene en la URL
+      this.origenListaId = params['listaId'] || null;
+
       if (codigoParam) {
         this.productoForm.patchValue({ codigo: codigoParam });
         await this.verificarSiExisteProducto(codigoParam);
@@ -73,16 +79,22 @@ export class AgregarProducto implements OnInit {
 
     try {
       if (this.isEditMode()) {
-        // MODO ACTUALIZACIÓN
         await this.supabaseService.actualizarProducto(formValues.codigo, formValues);
         this.successMessage.set('¡Producto actualizado exitosamente!');
       } else {
-        // MODO CREACIÓN (NUEVO)
         await this.supabaseService.insertarProducto(formValues);
         this.successMessage.set('¡Producto agregado exitosamente!');
       }
+
+      // Redirección inteligente al finalizar
       setTimeout(() => {
-        this.router.navigate(['/buscar-producto']);
+        if (this.origenListaId) {
+          // Si vino de una lista de compras, volvemos exactamente a ella
+          this.router.navigate(['/agregar-producto-lista', this.origenListaId]);
+        } else {
+          // Si vino por la búsqueda tradicional, vuelve a buscar-producto
+          this.router.navigate(['/buscar-producto']);
+        }
       }, 1500);
 
     } catch (err: any) {
