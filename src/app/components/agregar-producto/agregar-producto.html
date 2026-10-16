@@ -1,1 +1,46 @@
-<p>agregar-producto works!</p>
+<div class="form-card">
+    <h2>{{ isEditMode() ? 'Modificar Producto' : 'Agregar Nuevo Producto' }}</h2>
+
+    <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+        <div class="input-group">
+            <label>Código de Barras</label>
+            <input type="text" formControlName="codigo" placeholder="Código escaneado o ingresado" [readonly]="isEditMode()" />
+        </div>
+
+        <div class="input-group">
+            <label>Nombre del Producto</label>
+            <input type="text" formControlName="producto" placeholder="Ej: Fideos tirabuzón" />
+        </div>
+
+        <div class="input-group">
+            <label>Marca</label>
+            <input type="text" formControlName="marca" placeholder="Ej: Matarazzo" />
+        </div>
+
+        <div class="input-group">
+            <label>Medida / Presentación</label>
+            <input type="text" formControlName="medida" placeholder="Ej: 500g" />
+        </div>
+
+        <div class="input-group">
+            <label>Rubro</label>
+            <input type="text" formControlName="rubro" placeholder="Ej: Almacén" />
+        </div>
+
+        @if (errorMessage()) {
+            <p class="error-msg">{{ errorMessage() }}</p>
+        }
+
+        @if (successMessage()) {
+            <p class="success-msg">{{ successMessage() }}</p>
+        }
+
+        <button type="submit" class="btn btn-primary" [disabled]="productoForm.invalid || loading()">
+            {{ loading() ? 'Guardando...' : (isEditMode() ? 'Actualizar Producto' : 'Guardar Producto') }}
+        </button>
+
+        <a routerLink="/menu-principal" class="btn btn-text" style="display: block; text-align: center; text-decoration: none;">
+            Volver al Menú
+        </a>
+    </form>
+</div>

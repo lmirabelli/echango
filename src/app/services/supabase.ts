@@ -87,4 +87,25 @@ export class SupabaseService {
         if (error) throw error;
         return data;
     }
+
+    // Insertar nuevo producto
+    async insertarProducto(producto: any) {
+        const { data, error } = await this.supabase
+            .from('productos')
+            .insert([producto])
+            .select();
+        if (error) throw error;
+        return data;
+    }
+
+    // Actualizar producto existente por código
+    async actualizarProducto(codigo: string, productoActualizado: any) {
+        const { data, error } = await this.supabase
+            .from('productos')
+            .update(productoActualizado)
+            .eq('codigo', codigo)
+            .select();
+        if (error) throw error;
+        return data;
+    }
 }

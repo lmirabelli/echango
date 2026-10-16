@@ -1,0 +1,94 @@
+.form-card {
+    width: 95%;
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    color: var(--text-main);
+    font-family: var(--font-family);
+
+    h2 {
+        color: var(--primary);
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+    }
+}
+
+.input-group {
+    margin-bottom: 1rem;
+    text-align: left;
+
+    label {
+        display: block;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 0.4rem;
+    }
+
+    input {
+        width: 100%;
+        padding: 0.8rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-color);
+        background: var(--bg-main);
+        color: var(--text-main);
+        box-sizing: border-box;
+        font-size: 1rem;
+        font-family: var(--font-family);
+
+        &:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        &:read-only {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    }
+}
+
+.btn {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    margin-top: 0.8rem;
+    font-size: 1rem;
+    font-family: var(--font-family);
+
+    &:active {
+        opacity: 0.8;
+    }
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: var(--bg-main);
+}
+
+.btn-text {
+    background: transparent;
+    color: var(--text-muted);
+    margin-top: 1rem;
+    text-decoration: none;
+}
+
+.error-msg {
+    color: var(--error-color, #f43f5e);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.success-msg {
+    color: var(--success-color, #10b981);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
