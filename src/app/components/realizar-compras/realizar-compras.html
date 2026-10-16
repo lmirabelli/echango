@@ -1,18 +1,18 @@
 <div class="compras-container">
     <h2>Realizar Compra (Chango)</h2>
 
-    <!-- Configuración inicial: Supermercado y Lista guía -->
+    <!-- Configuración inicial -->
     <div class="config-section">
         <form [formGroup]="compraForm" class="config-form">
             <div class="input-group">
-                <label>Supermercado actual *</label>
-                <input type="text" formControlName="supermercado" placeholder="Ej: Coto, Carrefour, Día..." />
-            </div>
+    <label>Supermercado actual *</label>
+    <input type="text" formControlName="supermercado" (blur)="onSupermercadoChange()" placeholder="Ej: Coto, Carrefour, Día..." />
+</div>
         </form>
 
         @if (listas().length > 0) {
             <div class="input-group">
-                <label>Lista Guía (Solo lectura)</label>
+                <label>Seleccionar Lista Guía</label>
                 <select [value]="listaSeleccionadaId()" (change)="onCambiarLista($event)">
                     @for (lista of listas(); track lista.id) {
                         <option [value]="lista.id">{{ lista.nombre_lista }}</option>
@@ -33,7 +33,7 @@
         <p class="success-msg">{{ successMessage() }}</p>
     }
 
-    <!-- Panel flotante cuando se escanea y reconoce un producto -->
+    <!-- Panel flotante de producto detectado -->
     @if (productoActual()) {
         <div class="producto-detectado-card">
             <h3>Producto Detectado:</h3>
@@ -58,22 +58,65 @@
         </div>
     }
 
-    <!-- Vista resumida de la lista guía seleccionada -->
+    <!-- 1. Lista Guía interactiva -->
     <div class="guia-seccion">
-        <h3>Lista Guía de Referencia</h3>
+        <h3>Lista Guía (Hacé clic para cambiar estado)</h3>
         @if (loadingProductos()) {
-            <p class="loading-msg">Cargando lista...</p>
+            <p class="loading-msg">Cargando guía...</p>
         } @else if (productosDeLista().length > 0) {
             <ul class="guia-list">
                 @for (item of productosDeLista(); track item.id) {
-                    <li [class.comprado]="item.comprado">
-                        <span>{{ item.producto }} ({{ item.cantidad }})</span>
-                        <span class="estado">{{ item.comprado ? '✓' : 'Pendiente' }}</span>
+                    <li [class.comprado]="item.comprado" (click)="toggleEstadoGuia(item)">
+                        <div class="guia-info">
+                            <input type="checkbox" [checked]="item.comprado" (click)="$event.stopPropagation(); toggleEstadoGuia(item)" />
+                            <span [style.text-decoration]="item.comprado ? 'line-through' : 'none'">
+                                {{ item.producto }} - {{ item.marca }} (Cant: {{ item.cantidad }})
+                            </span>
+                        </div>
+                        <span class="badge-estado">{{ item.comprado ? 'En el chango' : 'Pendiente' }}</span>
                     </li>
                 }
             </ul>
         } @else {
-            <p class="empty-msg">No hay productos en la lista seleccionada.</p>
+            <p class="empty-msg">No hay productos en esta lista.</p>
+        }
+    </div>
+
+    <!-- 2. Productos cargados en el Chango -->
+    <div class="chango-seccion">
+        <h3>Productos en tu Chango</h3>
+        @if (productosEnChango().length > 0) {
+            <ul class="chango-list">
+                @for (item of productosEnChango(); track item.id) {
+                    <li>
+                        <div class="chango-detalle">
+                            <strong>{{ item.producto }}</strong>
+                            @if (item.marca) {
+                                <span>{{ item.marca }}</span>
+                            }
+                            <span>{{ item.cantidad }} x ${{ item.precio | number:'1.2-2' }}</span>
+                        </div>
+                        <div class="chango-acciones">
+                            <span class="subtotal">${{ (item.cantidad * item.precio) | number:'1.2-2' }}</span>
+                            <!-- Botón con cruz para eliminar del chango -->
+                            <button class="btn-delete" (click)="eliminarItemDelChango(item.id)" title="Quitar del chango">✕</button>
+                        </div>
+                    </li>
+                }
+            </ul>
+
+            <!-- 3. Total General -->
+            <div class="total-container">
+                <span>Total en el Chango:</span>
+                <span class="monto-total">${{ totalChango() | number:'1.2-2' }}</span>
+            </div>
+
+            <!-- 4. Botón Compra Realizada -->
+            <button class="btn btn-success" (click)="finalizarCompra()">
+                Compra Realizada
+            </button>
+        } @else {
+            <p class="empty-msg">Todavía no escaneaste ni agregaste productos al chango.</p>
         }
     </div>
 

@@ -3,6 +3,7 @@ import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 import { from, switchMap } from 'rxjs';
 import { RegisterData, UserProfile } from '../models/user';
+import { ItemChango } from '../models/compra';
 
 @Injectable({
     providedIn: 'root'
@@ -198,23 +199,36 @@ async eliminarListaCompra(listaId: number) {
   if (error) throw error;
 }
 // Registrar una compra en la tabla compras
-async registrarCompra(compra: {
-  producto: string;
-  marca?: string;
-  codigo_barra?: string;
-  cantidad: number;
-  precio: number;
-  supermercado: string;
-}) {
+async registrarCompra(compra: ItemChango) {
   const user = await this.getCurrentUser();
   if (!user) throw new Error('Usuario no autenticado');
 
   const { data, error } = await this.supabase
-    .from('compras')
+    .from('en_chango')
     .insert([{ ...compra, usuario: user.id }])
     .select();
 
   if (error) throw error;
   return data;
 }
+
+async obtenerComprasPorSupermercado(supermercado: string): Promise<ItemChango[]> {
+  const { data, error } = await this.supabase
+    .from('en_chango')
+    .select('*');
+
+  if (error) throw error;
+  return data || [];
+}
+
+// Eliminar un ítem del chango por su ID
+async eliminarItemChango(itemId: number) {
+  const { error } = await this.supabase
+    .from('en_chango')
+    .delete()
+    .eq('id', itemId);
+
+  if (error) throw error;
+}
+
 }
