@@ -5,6 +5,8 @@
 /tmp
 /out-tsc
 /bazel-out
+/src/environments/environment.ts
+/src/environments/environment.prod.ts
 
 # Node
 /node_modules
@@ -42,3 +44,4 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+.env
