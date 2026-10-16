@@ -1,0 +1,87 @@
+.form-card {
+    width: 100%;
+    max-width: 420px;
+    background: #1e293b;
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+    box-sizing: border-box;
+    color: #fff;
+    font-family: system-ui, -apple-system, sans-serif;
+    margin: auto;
+
+    h2 {
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+        text-align: center;
+        color: #38bdf8;
+    }
+}
+
+.input-group {
+    margin-bottom: 1rem;
+    text-align: left;
+
+    label {
+        display: block;
+        font-size: 0.85rem;
+        color: #94a3b8;
+        margin-bottom: 0.4rem;
+    }
+
+    input {
+        width: 100%;
+        padding: 0.8rem;
+        border-radius: 10px;
+        border: 1px solid #334155;
+        background: #0f172a;
+        color: #fff;
+        box-sizing: border-box;
+        font-size: 1rem;
+
+        &:focus {
+            outline: none;
+            border-color: #38bdf8;
+        }
+    }
+}
+
+.btn {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    margin-top: 0.8rem;
+    font-size: 1rem;
+    transition: opacity 0.2s;
+
+    &:active {
+        opacity: 0.8;
+    }
+}
+
+.btn-primary {
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+.btn-text {
+    background: transparent;
+    color: #94a3b8;
+    margin-top: 0.5rem;
+}
+
+.error-msg {
+    color: #f43f5e;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.success-msg {
+    color: #10b981;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}

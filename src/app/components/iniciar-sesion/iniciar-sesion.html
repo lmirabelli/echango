@@ -1,0 +1,25 @@
+<div class="form-card">
+    <h2>Iniciar Sesión</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="input-group">
+            <label>Correo electrónico</label>
+            <input type="email" formControlName="email" placeholder="tucorreo@email.com" />
+        </div>
+
+        <div class="input-group">
+            <label>Contraseña</label>
+            <input type="password" formControlName="password" placeholder="••••••••" />
+        </div>
+
+        @if (errorMessage()) {
+        <p class="error-msg">{{ errorMessage() }}</p>
+        }
+
+        <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid || loading()">
+            {{ loading() ? 'Ingresando...' : 'Entrar' }}
+        </button>
+
+        <button type="button" class="btn btn-text" (click)="goBack.emit()">Volver al inicio</button>
+    </form>
+</div>

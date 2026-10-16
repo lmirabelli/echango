@@ -1,0 +1,48 @@
+<div class="form-card">
+    <h2>Crear Cuenta</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="input-group">
+            <label>Nombre</label>
+            <input type="text" formControlName="nombre" placeholder="Tu nombre" />
+        </div>
+
+        <div class="input-group">
+            <label>Apellido</label>
+            <input type="text" formControlName="apellido" placeholder="Tu apellido" />
+        </div>
+
+        <div class="input-group">
+            <label>Usuario (User)</label>
+            <input type="text" formControlName="user" placeholder="nombredeusuario" />
+        </div>
+
+        <div class="input-group">
+            <label>Correo electrónico</label>
+            <input type="email" formControlName="email" placeholder="tucorreo@email.com" />
+        </div>
+
+        <div class="input-group">
+            <label>Ciudad</label>
+            <input type="text" formControlName="ciudad" placeholder="Tu ciudad" />
+        </div>
+
+        <div class="input-group">
+            <label>Contraseña</label>
+            <input type="password" formControlName="password" placeholder="••••••••" />
+        </div>
+
+        @if (errorMessage()) {
+        <p class="error-msg">{{ errorMessage() }}</p>
+        }
+        @if (successMessage()) {
+        <p class="success-msg">{{ successMessage() }}</p>
+        }
+
+        <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid || loading()">
+            {{ loading() ? 'Registrando...' : 'Completar Registro' }}
+        </button>
+
+        <button type="button" class="btn btn-text" (click)="goBack.emit()">Volver al inicio</button>
+    </form>
+</div>
