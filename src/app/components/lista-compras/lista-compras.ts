@@ -98,4 +98,55 @@ export class ListaCompras implements OnInit {
       this.seleccionarLista(id);
     }
   }
+
+  // --- NUEVAS FUNCIONES ---
+
+  // Marcar como comprado o pendiente
+  async toggleComprado(item: any) {
+    try {
+      const nuevoEstado = !item.comprado;
+      await this.supabaseService.actualizarEstadoProducto(item.id, nuevoEstado);
+      
+      // Corregido: usamos la señal correcta 'productosDeLista'
+      this.productosDeLista.update(productos => 
+        productos.map(p => p.id === item.id ? { ...p, comprado: nuevoEstado } : p)
+      );
+    } catch (err) {
+      this.errorMessage.set('Error al actualizar el estado del producto.');
+    }
+  }
+
+  // Eliminar un producto individual de la lista
+  async eliminarProducto(itemId: number) {
+    try {
+      await this.supabaseService.eliminarProductoDeLista(itemId);
+      this.productosDeLista.update(productos => productos.filter(p => p.id !== itemId));
+    } catch (err) {
+      this.errorMessage.set('Error al eliminar el producto.');
+    }
+  }
+
+  // Eliminar la lista completa de la BD
+  async eliminarListaActual() {
+    const listaId = this.listaSeleccionadaId();
+    if (!listaId) return;
+
+    const confirmar = window.confirm('¿Estás seguro de que querés eliminar esta lista completa?');
+    if (!confirmar) return;
+
+    try {
+      await this.supabaseService.eliminarListaCompra(listaId);
+      
+      this.listas.update(listas => listas.filter(l => l.id !== listaId));
+      this.listaSeleccionadaId.set(null);
+      this.productosDeLista.set([]);
+
+      const remainingListas = this.listas();
+      if (remainingListas.length > 0) {
+        this.seleccionarLista(remainingListas[0].id);
+      }
+    } catch (err) {
+      this.errorMessage.set('Error al eliminar la lista de compras.');
+    }
+  }
 }

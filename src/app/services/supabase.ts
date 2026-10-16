@@ -167,4 +167,34 @@ export class SupabaseService {
         if (error) throw error;
         return data;
     }
+
+    // Marcar producto como comprado / pendiente
+async actualizarEstadoProducto(productoListaId: number, comprado: boolean) {
+  const { error } = await this.supabase
+    .from('productos_lista')
+    .update({ comprado })
+    .eq('id', productoListaId);
+
+  if (error) throw error;
+}
+
+// Eliminar un producto de la lista
+async eliminarProductoDeLista(productoListaId: number) {
+  const { error } = await this.supabase
+    .from('productos_lista')
+    .delete()
+    .eq('id', productoListaId);
+
+  if (error) throw error;
+}
+
+// Eliminar una lista completa de compras
+async eliminarListaCompra(listaId: number) {
+  const { error } = await this.supabase
+    .from('lista_compras')
+    .delete()
+    .eq('id', listaId);
+
+  if (error) throw error;
+}
 }

@@ -149,3 +149,83 @@
         margin-bottom: 1rem;
     }
 }
+
+.select-actions {
+    display: flex;
+    gap: 0.5rem;
+
+    select {
+        flex: 1;
+    }
+
+    .btn-icon-danger {
+        background: var(--bg-main);
+        border: 1px solid var(--error-color, #f43f5e);
+        color: var(--error-color, #f43f5e);
+        padding: 0 0.8rem;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s;
+
+        &:hover {
+            background: rgba(244, 63, 94, 0.1);
+        }
+    }
+}
+
+.btn-add {
+    margin-bottom: 1rem;
+}
+
+.producto-item {
+    background: var(--bg-main);
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: opacity 0.2s;
+
+    &.comprado {
+        opacity: 0.6;
+        background: rgba(16, 185, 129, 0.05);
+        border-color: var(--success-color, #10b981);
+    }
+
+    .info {
+        display: flex;
+        gap: 0.8rem;
+        cursor: pointer;
+        flex: 1;
+        text-transform: capitalize;
+
+        div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+
+            span {
+                font-size: 0.85rem;
+                margin-left: 4px;
+                color: var(--text-muted);
+            }
+        }
+    }
+
+    .btn-delete {
+        background: transparent;
+        border: none;
+        color: var(--error-color, #f43f5e);
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: bold;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+
+        &:hover {
+            background: rgba(244, 63, 94, 0.1);
+        }
+    }
+}

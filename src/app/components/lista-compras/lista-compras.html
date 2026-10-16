@@ -6,11 +6,15 @@
         @if (listas().length > 0) {
             <div class="select-group">
                 <label>Seleccionar Lista:</label>
-                <select [value]="listaSeleccionadaId()" (change)="onCambiarLista($event)">
-                    @for (lista of listas(); track lista.id) {
-                        <option [value]="lista.id">{{ lista.nombre_lista }}</option>
-                    }
-                </select>
+                <div class="select-actions">
+                    <select [value]="listaSeleccionadaId()" (change)="onCambiarLista($event)">
+                        @for (lista of listas(); track lista.id) {
+                            <option [value]="lista.id">{{ lista.nombre_lista }}</option>
+                        }
+                    </select>
+                    <!-- Botón para eliminar la lista actual -->
+                    <button class="btn-icon-danger" (click)="eliminarListaActual()" title="Eliminar esta lista">🗑️</button>
+                </div>
             </div>
         } @else {
             <p class="empty-msg">No tenés listas creadas todavía.</p>
@@ -31,14 +35,15 @@
         </form>
     }
 
+    @if (listaSeleccionadaId()) {
+        <button class="btn btn-primary btn-add" [routerLink]="['/agregar-producto-lista', listaSeleccionadaId()]">
+            + Agregar Productos a esta Lista
+        </button>
+    }
+
     @if (errorMessage()) {
         <p class="error-msg">{{ errorMessage() }}</p>
     }
-    @if (listaSeleccionadaId()) {
-    <button class="btn btn-primary" [routerLink]="['/agregar-producto-lista', listaSeleccionadaId()]">
-        + Agregar Productos a esta Lista
-    </button>
-}
 
     <!-- Sección de productos de la lista seleccionada -->
     <div class="productos-seccion">
@@ -49,11 +54,17 @@
         } @else if (productosDeLista().length > 0) {
             <ul class="productos-list">
                 @for (item of productosDeLista(); track item.id) {
-                    <li class="producto-item">
-                        <div class="info">
-                            <strong>{{ item.producto }}</strong>
-                            <span>{{ item.marca }} - {{ item.medida }} (Cant: {{ item.cantidad }})</span>
+                    <li class="producto-item" [class.comprado]="item.comprado">
+                        <div class="info" (click)="toggleComprado(item)">
+                            <div>
+                                <strong [style.text-decoration]="item.comprado ? 'line-through' : 'none'">
+                                    <span>{{item.cantidad}} - </span>
+                                    {{ item.producto }}
+                                    <span>{{ item.marca }} - {{ item.medida }}</span>
+                                </strong>
+                            </div>
                         </div>
+                        <button class="btn-delete" (click)="eliminarProducto(item.id)" title="Eliminar producto">✕</button>
                     </li>
                 }
             </ul>
@@ -61,7 +72,6 @@
             <p class="empty-msg">Esta lista está vacía.</p>
         }
     </div>
-    
 
     <button class="btn btn-text" routerLink="/menu-principal">Volver al Menú</button>
 </div>
