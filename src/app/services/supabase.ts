@@ -108,4 +108,63 @@ export class SupabaseService {
         if (error) throw error;
         return data;
     }
+
+    // Obtener todas las listas del usuario actual
+    async obtenerListasCompras() {
+        const user = await this.getCurrentUser();
+        if (!user) return [];
+
+        const { data, error } = await this.supabase
+            .from('lista_compras')
+            .select('*')
+            .eq('usuario', user.id)
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        return data || [];
+    }
+
+    // Crear una nueva lista de compras
+    async crearListaCompra(nombreLista: string) {
+        const user = await this.getCurrentUser();
+        if (!user) throw new Error('Usuario no autenticado');
+
+        const { data, error } = await this.supabase
+            .from('lista_compras')
+            .insert([{ nombre_lista: nombreLista, usuario: user.id }])
+            .select()
+            .single();
+
+        if (error) throw error;
+        return data;
+    }
+
+    // Obtener los productos de una lista específica
+    async obtenerProductosDeLista(listaId: number) {
+        const { data, error } = await this.supabase
+            .from('productos_lista')
+            .select('*')
+            .eq('lista', listaId)
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        return data || [];
+    }
+
+    async agregarProductoALista(item: {
+        lista: number;
+        cantidad: number;
+        codigo_barras?: string;
+        producto: string;
+        marca?: string;
+        medida?: string;
+    }) {
+        const { data, error } = await this.supabase
+            .from('productos_lista')
+            .insert([item])
+            .select();
+
+        if (error) throw error;
+        return data;
+    }
 }

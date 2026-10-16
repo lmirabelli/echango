@@ -1,1 +1,67 @@
-<p>lista-compras works!</p>
+<div class="lista-container">
+    <h2>Mis Listas de Compras</h2>
+
+    <!-- Menú de selección y creación de listas -->
+    <div class="menu-listas">
+        @if (listas().length > 0) {
+            <div class="select-group">
+                <label>Seleccionar Lista:</label>
+                <select [value]="listaSeleccionadaId()" (change)="onCambiarLista($event)">
+                    @for (lista of listas(); track lista.id) {
+                        <option [value]="lista.id">{{ lista.nombre_lista }}</option>
+                    }
+                </select>
+            </div>
+        } @else {
+            <p class="empty-msg">No tenés listas creadas todavía.</p>
+        }
+
+        <button class="btn btn-secondary" (click)="creandoLista.set(!creandoLista())">
+            {{ creandoLista() ? 'Cancelar' : '+ Nueva Lista' }}
+        </button>
+    </div>
+
+    <!-- Formulario colapsable para crear nueva lista -->
+    @if (creandoLista()) {
+        <form [formGroup]="nuevaListaForm" (ngSubmit)="crearNuevaLista()" class="nueva-lista-form">
+            <input type="text" formControlName="nombre_lista" placeholder="Nombre de la lista (ej: Supermercado mensual)" />
+            <button type="submit" class="btn btn-primary" [disabled]="nuevaListaForm.invalid || loadingListas()">
+                Guardar Lista
+            </button>
+        </form>
+    }
+
+    @if (errorMessage()) {
+        <p class="error-msg">{{ errorMessage() }}</p>
+    }
+    @if (listaSeleccionadaId()) {
+    <button class="btn btn-primary" [routerLink]="['/agregar-producto-lista', listaSeleccionadaId()]">
+        + Agregar Productos a esta Lista
+    </button>
+}
+
+    <!-- Sección de productos de la lista seleccionada -->
+    <div class="productos-seccion">
+        <h3>Productos en la lista</h3>
+
+        @if (loadingProductos()) {
+            <p class="loading-msg">Cargando productos...</p>
+        } @else if (productosDeLista().length > 0) {
+            <ul class="productos-list">
+                @for (item of productosDeLista(); track item.id) {
+                    <li class="producto-item">
+                        <div class="info">
+                            <strong>{{ item.producto }}</strong>
+                            <span>{{ item.marca }} - {{ item.medida }} (Cant: {{ item.cantidad }})</span>
+                        </div>
+                    </li>
+                }
+            </ul>
+        } @else {
+            <p class="empty-msg">Esta lista está vacía.</p>
+        }
+    </div>
+    
+
+    <button class="btn btn-text" routerLink="/menu-principal">Volver al Menú</button>
+</div>

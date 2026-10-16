@@ -17,6 +17,7 @@
             <p><strong>Medida:</strong> {{ productoEncontrado().medida }}</p>
             <p><strong>Código:</strong> {{ productoEncontrado().codigo }}</p>
         </div>
+        <button class="btn btn-text" routerLink="/buscar-producto">Buscar Otro Producto</button>
     }
 
     @if (errorMessage()) {

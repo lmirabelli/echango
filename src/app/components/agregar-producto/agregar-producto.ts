@@ -20,23 +20,21 @@ export class AgregarProducto implements OnInit {
   loading = signal(false);
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);
-  isEditMode = signal(false); // Bandera para saber si estamos modificando
+  isEditMode = signal(false);
 
   productoForm: FormGroup = this.fb.group({
     producto: ['', [Validators.required]],
     marca: ['', [Validators.required]],
     medida: ['', [Validators.required]],
     rubro: ['', [Validators.required]],
-    codigo: ['', [Validators.required]] // Campo de código de barras
+    codigo: ['', [Validators.required]]
   });
 
   async ngOnInit() {
-    // Capturamos el código enviado por queryParams desde el escáner o listados
     this.route.queryParams.subscribe(async (params) => {
       const codigoParam = params['codigo'];
       if (codigoParam) {
         this.productoForm.patchValue({ codigo: codigoParam });
-        // Verificamos si ya existe para cargar sus datos en modo edición
         await this.verificarSiExisteProducto(codigoParam);
       }
     });
@@ -48,7 +46,6 @@ export class AgregarProducto implements OnInit {
       const productoExistente = await this.supabaseService.buscarProductoPorCodigo(codigo);
       
       if (productoExistente) {
-        // Si existe, activamos modo edición y rellenamos el formulario
         this.isEditMode.set(true);
         this.productoForm.patchValue({
           producto: productoExistente.producto,
@@ -84,10 +81,8 @@ export class AgregarProducto implements OnInit {
         await this.supabaseService.insertarProducto(formValues);
         this.successMessage.set('¡Producto agregado exitosamente!');
       }
-
-      // Redirigir al menú o limpiar tras 1.5 segundos
       setTimeout(() => {
-        this.router.navigate(['/menu-principal']);
+        this.router.navigate(['/buscar-producto']);
       }, 1500);
 
     } catch (err: any) {

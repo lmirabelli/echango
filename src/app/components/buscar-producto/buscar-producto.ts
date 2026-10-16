@@ -48,8 +48,10 @@ export class BuscarProducto implements AfterViewInit, OnDestroy {
       const producto = await this.supabaseService.buscarProductoPorCodigo(codigoEscaneado);
 
       if (producto) {
-        // ¡Existe! Lo mostramos en pantalla pero dejamos el escáner activo
+        // ¡Existe! Lo mostramos en pantalla
         this.productoEncontrado.set(producto);
+        // Opcional: pausar el escáner si ya encontró el producto
+        this.scanner?.clear();
       } else {
         // No existe: redirigir al componente agregar-producto pasando el código por queryParams
         this.router.navigate(['/agregar-producto'], { queryParams: { codigo: codigoEscaneado } });

@@ -1,0 +1,54 @@
+<div class="agregar-lista-container">
+    <h2>Agregar Producto a la Lista</h2>
+
+    <!-- Escáner integrado -->
+    <div id="reader"></div>
+
+    @if (productoDetectadoMsg()) {
+        <p class="info-msg">{{ productoDetectadoMsg() }}</p>
+    }
+
+    <!-- Formulario para ingresar o ajustar el producto antes de guardarlo -->
+    <form [formGroup]="itemForm" (ngSubmit)="onSubmit()" class="producto-form">
+        <div class="input-group">
+            <label>Producto *</label>
+            <input type="text" formControlName="producto" placeholder="Nombre del producto" />
+        </div>
+
+        <div class="row-group">
+            <div class="input-group">
+                <label>Marca</label>
+                <input type="text" formControlName="marca" placeholder="Ej: La Serenísima" />
+            </div>
+            <div class="input-group">
+                <label>Medida</label>
+                <input type="text" formControlName="medida" placeholder="Ej: 1 Litro" />
+            </div>
+        </div>
+
+        <div class="row-group">
+            <div class="input-group">
+                <label>Cantidad *</label>
+                <input type="number" formControlName="cantidad" min="1" />
+            </div>
+            <div class="input-group">
+                <label>Código de Barras</label>
+                <input type="text" formControlName="codigo_barras" placeholder="Opcional" readonly />
+            </div>
+        </div>
+
+        @if (errorMessage()) {
+            <p class="error-msg">{{ errorMessage() }}</p>
+        }
+
+        @if (successMessage()) {
+            <p class="success-msg">{{ successMessage() }}</p>
+        }
+
+        <button type="submit" class="btn btn-primary" [disabled]="itemForm.invalid || loading()">
+            {{ loading() ? 'Agregando...' : 'Agregar a la Lista' }}
+        </button>
+    </form>
+
+    <button class="btn btn-text" [routerLink]="['/lista-compras']">Volver a mis Listas</button>
+</div>

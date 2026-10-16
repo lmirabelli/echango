@@ -8,6 +8,7 @@ import { RealizarCompras } from './components/realizar-compras/realizar-compras'
 import { ListaCompras } from './components/lista-compras/lista-compras';
 import { BuscarProducto } from './components/buscar-producto/buscar-producto';
 import { AgregarProducto } from './components/agregar-producto/agregar-producto';
+import { AgregarProductoLista } from './components/agregar-producto-lista/agregar-producto-lista';
 
 export const routes: Routes = [
   { path: '', component: IndexViewComponent },
@@ -38,5 +39,10 @@ export const routes: Routes = [
     component: AgregarProducto,
     canActivate: [authGuard]
   },
+  { 
+  path: 'agregar-producto-lista/:listaId', 
+  component: AgregarProductoLista, 
+  canActivate: [authGuard] 
+},
   { path: '**', redirectTo: '' } // Comodín para URLs no encontradas
 ];
