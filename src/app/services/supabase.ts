@@ -197,4 +197,24 @@ async eliminarListaCompra(listaId: number) {
 
   if (error) throw error;
 }
+// Registrar una compra en la tabla compras
+async registrarCompra(compra: {
+  producto: string;
+  marca?: string;
+  codigo_barra?: string;
+  cantidad: number;
+  precio: number;
+  supermercado: string;
+}) {
+  const user = await this.getCurrentUser();
+  if (!user) throw new Error('Usuario no autenticado');
+
+  const { data, error } = await this.supabase
+    .from('compras')
+    .insert([{ ...compra, usuario: user.id }])
+    .select();
+
+  if (error) throw error;
+  return data;
+}
 }

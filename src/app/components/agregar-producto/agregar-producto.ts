@@ -22,8 +22,9 @@ export class AgregarProducto implements OnInit {
   successMessage = signal<string | null>(null);
   isEditMode = signal(false);
   
-  // Variable para almacenar de qué lista vino (si aplica)
+  // Variables para almacenar de dónde vino (origen de lista o de compras en curso)
   private origenListaId: string | null = null;
+  private returnUrl: string | null = null;
 
   productoForm: FormGroup = this.fb.group({
     producto: ['', [Validators.required]],
@@ -36,8 +37,9 @@ export class AgregarProducto implements OnInit {
   async ngOnInit() {
     this.route.queryParams.subscribe(async (params) => {
       const codigoParam = params['codigo'];
-      // Capturamos el listaId si viene en la URL
+      // Capturamos el listaId o la URL de retorno si vienen en los queryParams
       this.origenListaId = params['listaId'] || null;
+      this.returnUrl = params['returnUrl'] || null;
 
       if (codigoParam) {
         this.productoForm.patchValue({ codigo: codigoParam });
@@ -86,13 +88,16 @@ export class AgregarProducto implements OnInit {
         this.successMessage.set('¡Producto agregado exitosamente!');
       }
 
-      // Redirección inteligente al finalizar
+      // Redirección inteligente al finalizar según el origen
       setTimeout(() => {
-        if (this.origenListaId) {
-          // Si vino de una lista de compras, volvemos exactamente a ella
+        if (this.returnUrl) {
+          // Si vino desde el módulo de realización de compras en vivo
+          this.router.navigate([this.returnUrl]);
+        } else if (this.origenListaId) {
+          // Si vino desde una lista específica de compras
           this.router.navigate(['/agregar-producto-lista', this.origenListaId]);
         } else {
-          // Si vino por la búsqueda tradicional, vuelve a buscar-producto
+          // Por defecto, vuelve al buscador de productos
           this.router.navigate(['/buscar-producto']);
         }
       }, 1500);

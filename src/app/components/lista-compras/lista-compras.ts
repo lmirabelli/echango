@@ -61,7 +61,11 @@ export class ListaCompras implements OnInit {
     try {
       this.loadingProductos.set(true);
       const productos = await this.supabaseService.obtenerProductosDeLista(listaId);
-      this.productosDeLista.set(productos);
+      const productosOrdenados = productos.sort((a, b) => 
+        a.producto.localeCompare(b.producto, 'es', { sensitivity: 'base' })
+      );
+
+      this.productosDeLista.set(productosOrdenados);
     } catch (err: any) {
       this.errorMessage.set('Error al cargar los productos de la lista.');
     } finally {

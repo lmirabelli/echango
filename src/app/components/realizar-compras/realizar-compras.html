@@ -1,1 +1,81 @@
-<p>realizar-compras works!</p>
+<div class="compras-container">
+    <h2>Realizar Compra (Chango)</h2>
+
+    <!-- Configuración inicial: Supermercado y Lista guía -->
+    <div class="config-section">
+        <form [formGroup]="compraForm" class="config-form">
+            <div class="input-group">
+                <label>Supermercado actual *</label>
+                <input type="text" formControlName="supermercado" placeholder="Ej: Coto, Carrefour, Día..." />
+            </div>
+        </form>
+
+        @if (listas().length > 0) {
+            <div class="input-group">
+                <label>Lista Guía (Solo lectura)</label>
+                <select [value]="listaSeleccionadaId()" (change)="onCambiarLista($event)">
+                    @for (lista of listas(); track lista.id) {
+                        <option [value]="lista.id">{{ lista.nombre_lista }}</option>
+                    }
+                </select>
+            </div>
+        }
+    </div>
+
+    <!-- Escáner continuo -->
+    <div id="reader"></div>
+
+    @if (errorMessage()) {
+        <p class="error-msg">{{ errorMessage() }}</p>
+    }
+
+    @if (successMessage()) {
+        <p class="success-msg">{{ successMessage() }}</p>
+    }
+
+    <!-- Panel flotante cuando se escanea y reconoce un producto -->
+    @if (productoActual()) {
+        <div class="producto-detectado-card">
+            <h3>Producto Detectado:</h3>
+            <p><strong>{{ productoActual().producto }}</strong> - {{ productoActual().marca }} ({{ productoActual().medida }})</p>
+
+            <form [formGroup]="compraForm" (ngSubmit)="confirmarItemAlChango()" class="detalle-form">
+                <div class="row">
+                    <div class="input-group">
+                        <label>Cantidad</label>
+                        <input type="number" formControlName="cantidad" min="1" />
+                    </div>
+                    <div class="input-group">
+                        <label>Precio Unitario ($)</label>
+                        <input type="number" formControlName="precio" min="0" step="0.01" />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" [disabled]="compraForm.invalid">
+                    Confirmar e ingresar al Chango
+                </button>
+            </form>
+        </div>
+    }
+
+    <!-- Vista resumida de la lista guía seleccionada -->
+    <div class="guia-seccion">
+        <h3>Lista Guía de Referencia</h3>
+        @if (loadingProductos()) {
+            <p class="loading-msg">Cargando lista...</p>
+        } @else if (productosDeLista().length > 0) {
+            <ul class="guia-list">
+                @for (item of productosDeLista(); track item.id) {
+                    <li [class.comprado]="item.comprado">
+                        <span>{{ item.producto }} ({{ item.cantidad }})</span>
+                        <span class="estado">{{ item.comprado ? '✓' : 'Pendiente' }}</span>
+                    </li>
+                }
+            </ul>
+        } @else {
+            <p class="empty-msg">No hay productos en la lista seleccionada.</p>
+        }
+    </div>
+
+    <button class="btn btn-text" routerLink="/menu-principal">Volver al Menú</button>
+</div>
