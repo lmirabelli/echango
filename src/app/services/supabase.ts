@@ -58,9 +58,33 @@ export class SupabaseService {
         return from(this.supabase.auth.signOut());
     }
 
+    async getProfile() {
+        const user = await this.getCurrentUser();
+        if (!user) return null;
+        const { data, error } = await this.supabase
+            .from('profiles')
+            .select('*')
+            .eq('auth_id', user.id)
+            .single();
+
+        if (error) return null;
+        return data;
+    }
+
     // Obtener sesión actual de forma síncrona/promesa
     async getCurrentUser() {
         const { data: { user } } = await this.supabase.auth.getUser();
         return user;
+    }
+
+    async buscarProductoPorCodigo(codigo: string) {
+        const { data, error } = await this.supabase
+            .from('productos')
+            .select('*')
+            .eq('codigo', codigo)
+            .maybeSingle(); // Retorna el registro o null si no existe sin tirar error 406
+
+        if (error) throw error;
+        return data;
     }
 }

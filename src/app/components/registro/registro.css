@@ -1,0 +1,66 @@
+.form-card{
+    width: 95%;
+    min-height: 90vh;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    h2{
+        color: var(--primary);
+        letter-spacing: 2px;
+        margin-bottom: 2rem;
+    }
+    form{
+        .input-group{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0.3rem;
+            label{
+                width: 100%;
+                color: var(--text-main);
+                text-align: center;
+                font-size: 1.1rem;
+                font-weight: 700;
+            }
+            input{
+                padding: 0.4rem;
+                border: 1px solid var(--border-color);
+                border-radius: 0.25rem;
+                background: var(--bg-main);
+                color: var(--text-muted);
+                text-align: center;
+            }
+        }
+        .btn{
+            background-color: var(--primary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.25rem;
+            color: var(--bg-main);
+            width: 100%;
+            font-size: 1.05rem;
+            font-family: var(--fuente-sans);
+            font-weight: 800;
+            padding: 0.5rem 0;
+            margin: 0.25rem 0;
+            cursor: pointer;
+            transition: background 0.3s;
+            &:hover{
+                background-color: var(--text-main);
+            }
+        }
+        .error-msg{
+            background-color: var(--error-color);
+        }
+        .success-msg{
+            background-color: var(--success-color);
+        }
+        .error-msg, .success-msg{
+            padding: 4px;
+            text-align: center;
+            font-weight: 700;
+            border-radius: 0.5rem;
+        }
+    }
+}

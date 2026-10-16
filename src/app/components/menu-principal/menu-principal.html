@@ -1,0 +1,13 @@
+<div class="menu-container">
+    <h4>Hola, {{ username() }}!!!</h4>
+
+    <!-- Botones de navegación principales -->
+    <div class="menu-actions">
+        <button class="btn btn-primary" routerLink="/realizar-compras">Realizar Compras</button>
+        <button class="btn btn-primary" routerLink="/lista-compras">Lista de Compras</button>
+        <button class="btn btn-primary" routerLink="/buscar-producto">Buscar Producto</button>
+        
+        <!-- Botón para cerrar sesión -->
+        <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
+    </div>
+</div>

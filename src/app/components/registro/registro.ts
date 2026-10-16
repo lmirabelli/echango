@@ -3,19 +3,19 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SupabaseService } from '../../services/supabase';
 import { RegisterData } from '../../models/user';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './registro.html',
-  styleUrls: ['./registro.scss']
+  styleUrls: ['./registro.css']
 })
 export class RegisterFormComponent {
   private fb = inject(FormBuilder);
   private supabaseService = inject(SupabaseService);
 
-  goBack = output<void>();
   loading = signal(false);
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);

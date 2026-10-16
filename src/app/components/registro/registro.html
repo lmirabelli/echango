@@ -43,6 +43,8 @@
             {{ loading() ? 'Registrando...' : 'Completar Registro' }}
         </button>
 
-        <button type="button" class="btn btn-text" (click)="goBack.emit()">Volver al inicio</button>
+        <a routerLink="/" class="btn btn-text" style="display: block; text-align: center; text-decoration: none;">
+            Volver al inicio
+        </a>
     </form>
 </div>

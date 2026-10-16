@@ -2,17 +2,19 @@ import { Component, inject, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SupabaseService } from '../../services/supabase';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-iniciar-sesion',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './iniciar-sesion.html',
-  styleUrls: ['./iniciar-sesion.scss']
+  styleUrls: ['./iniciar-sesion.css']
 })
 export class IniciarSesionComponent {
   private fb = inject(FormBuilder);
   private supabaseService = inject(SupabaseService);
+  private router = inject(Router);
 
   goBack = output<void>();
   loginSuccess = output<void>(); // Evento cuando el login es exitoso
@@ -41,11 +43,12 @@ export class IniciarSesionComponent {
           return;
         }
         // Éxito al iniciar sesión
-        this.loginSuccess.emit();
+        this.router.navigate(['/menu-principal']);
       },
       error: (err) => {
         this.loading.set(false);
-        this.errorMessage.set(err.message || 'Ocurrió un error al iniciar sesión.');
+        const message = err?.error?.message || err?.message || 'Ocurrió un error inesperado al conectar con el servidor.';
+        this.errorMessage.set(message);
       }
     });
   }

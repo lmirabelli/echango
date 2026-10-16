@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Story+Script&display=swap');
+
+:root {
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --primary: #38bdf8;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --error-color: #f43f5e;
+  --success-color: #10b981;
+  --font-family: system-ui, -apple-system, sans-serif;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --max-width: 480px;
+
+  --fuente-titulos: "Chelsea Market", system-ui;
+  --fuente-subtitulos: "Story Script", sans-serif;
+  --fuente-sans: "Nunito", sans-serif;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  background-color: var(--bg-main);
+  font-family: var(--fuente-sans);
+  max-width: var(--max-width);
+}
+
+h1{
+  font-family: var(--fuente-titulos);
+  text-align: center;
+}
+h2,h3,h4,h5,h6{
+  font-family: var(--fuente-subtitulos);
+  text-align: center;
+}

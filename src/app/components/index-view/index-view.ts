@@ -7,6 +7,6 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './index-view.html',
-  styleUrls: ['./index-view.scss']
+  styleUrls: ['./index-view.css']
 })
 export class IndexViewComponent {}

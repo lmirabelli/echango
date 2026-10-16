@@ -1,0 +1,27 @@
+<div class="buscar-container">
+    <h2>Escanear Producto</h2>
+
+    <!-- Contenedor obligatorio para la librería de la cámara -->
+    <div id="reader"></div>
+
+    @if (buscando()) {
+        <p class="loading-msg">Buscando producto en la base de datos...</p>
+    }
+
+    @if (productoEncontrado()) {
+        <div class="result-card">
+            <h3>¡Producto Encontrado!</h3>
+            <p><strong>Producto:</strong> {{ productoEncontrado().producto }}</p>
+            <p><strong>Marca:</strong> {{ productoEncontrado().marca }}</p>
+            <p><strong>Rubro:</strong> {{ productoEncontrado().rubro }}</p>
+            <p><strong>Medida:</strong> {{ productoEncontrado().medida }}</p>
+            <p><strong>Código:</strong> {{ productoEncontrado().codigo }}</p>
+        </div>
+    }
+
+    @if (errorMessage()) {
+        <p class="error-msg">{{ errorMessage() }}</p>
+    }
+
+    <button class="btn btn-text" routerLink="/menu-principal">Volver al Menú</button>
+</div>
